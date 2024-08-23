@@ -8,6 +8,25 @@ export async function salvarFilme(filme){
 
     let resposta = conn.query(comando, [filme.nome, filme.sinopse, filme.avaliacao, filme.lancamento, filme.disponivel]);
     let info = resposta[0];
+
     let idFilme = info.insertId;
     return idFilme;
+}
+
+export async function consultarFilmes(nome){
+    let comando = `
+        SELECT id_filme         id,
+                nm_filme        nome,
+                ds_sinopse      sinopse,
+                vl_avaliacao    avaliacao,
+                dt_lancamento   lancamento,
+                bt_disponivel   disponivel
+        FROM tb_filme
+        WHERE nm_filme LIKE ?
+    `
+
+    let resposta = await conn.query(comando, [nome]);
+    let registros = resposta[0];
+    
+    return registros;
 }
